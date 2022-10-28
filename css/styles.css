@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background: #f4f4f4;
+}
+
+footer {
+  background: #333;
+  color: #fff;
+  padding: 1rem;
+}
+
+.container-alternative {
+  background: #547bc5;
+}
+
+.container-alternative h2 {
+  color: #f4f4f4;
+}
+
+.container {
+  padding: 1rem;
+}
