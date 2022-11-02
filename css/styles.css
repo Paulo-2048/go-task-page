@@ -1,7 +1,7 @@
-* {
+/* * {
   margin: 0;
   padding: 0;
-}
+} */
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -15,14 +15,6 @@ footer {
   background: #333;
   color: #fff;
   padding: 1rem;
-}
-
-.container-alternative {
-  background: #547bc5;
-}
-
-.container-alternative h2 {
-  color: #f4f4f4;
 }
 
 .container {

@@ -18,8 +18,6 @@ login.addEventListener("click", (e) => {
   const email = form.email.value;
   const password = form.password.value;
 
-  console.log(email, password);
-
   const options = {
     method: "POST",
     url: "https://gototask-api.herokuapp.com/jwt/login",
@@ -33,7 +31,6 @@ login.addEventListener("click", (e) => {
   window.axios
     .request(options)
     .then((response) => {
-      console.log(response.data.token);
       if (response.data.token == undefined) {throw "Usuário não encontrado";}
 
       // set cookie

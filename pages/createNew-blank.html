@@ -110,7 +110,7 @@
 
       <div class="container">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 content-text">
             <h1>Create New Note</h1>
             <p>
               Here you can create a new note, just fill the fields below and
@@ -120,6 +120,8 @@
               <i class="bi bi-info-circle-fill" style="color: blue"></i>
               <strong>Info!</strong> This is a blank note, you can write whatever you want. Posteriors versions will have more options of note templates to save time and effort.
             </p>
+            
+            
           </div>
         </div>
 
@@ -131,7 +133,7 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <form>
+            <form id="form">
               <div class="mb-3">
                 <label for="resume" class="form-label">Resume</label>
                 <input
@@ -198,7 +200,7 @@
                 />
               </div>
             -->
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" id="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
         </div>
@@ -227,6 +229,6 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0-rc.4/dist/js.cookie.min.js"></script>
     <script src="/js/main.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/createNew.js"></script>
   </body>
 </html>
