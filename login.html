@@ -8,8 +8,8 @@
 
     <!-- Styles -->
 
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="stylesheet" href="/css/auth.css" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/auth.css" />
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -30,21 +30,13 @@
           <div class="col">
             <div class="card">
               <div class="card-body">
-                <h1 class="card-title">Register</h1>
-                <form action="/register" method="POST">
+                <h1 class="card-title">Login</h1>
+                <form id="login-form">
                   <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
+                    <label for="email" class="form-label"
+                      >User | Email address</label
+                    >
                     <input
-                      type="text"
-                      class="form-control"
-                      id="name"
-                      name="name"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input
-                      type="email"
                       class="form-control"
                       id="email"
                       name="email"
@@ -62,8 +54,23 @@
                       id="password"
                       name="password"
                     />
+                    <!-- View password -->
+                    <div
+                      class="form-check form-switch d-flex justify-content-end align-items-center"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="view-password"
+                      />
+                      <label class="form-check-label" for="view-password"
+                        >View password</label
+                      >
+                    </div>
                   </div>
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button id="login-btn" type="submit" class="btn btn-primary">
+                    Log in
+                  </button>
                 </form>
               </div>
             </div>
@@ -80,7 +87,7 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0-rc.4/dist/js.cookie.min.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/main.js"></script>
+    <script src="/login.js"></script>
   </body>
 </html>
