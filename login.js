@@ -31,13 +31,15 @@ login.addEventListener("click", (e) => {
   window.axios
     .request(options)
     .then((response) => {
-      if (response.data.token == undefined) {throw "Usuário não encontrado";}
+      if (response.data.token == undefined) {
+        throw "Usuário não encontrado";
+      }
 
       // set cookie
       window.Cookies.set("userData", JSON.stringify(response.data), {
         expires: 1,
       });
-      window.location.assign("/index.html");
+      window.location.assign("go-task-pages/index.html");
     })
     .catch((error) => {
       // handle error
