@@ -4,6 +4,6 @@ try {
     throw "Não Autorizado";
   }
 } catch (error) {
-  if (location.pathname != "/login.html")
-    window.location.replace("/login.html");
+  if (location.pathname != "./login.html")
+    window.location.replace("./login.html");
 }
