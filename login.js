@@ -39,7 +39,7 @@ login.addEventListener("click", (e) => {
       window.Cookies.set("userData", JSON.stringify(response.data), {
         expires: 1,
       });
-      window.location.assign("go-task-pages/index.html");
+      window.location.assign("index.html");
     })
     .catch((error) => {
       // handle error
