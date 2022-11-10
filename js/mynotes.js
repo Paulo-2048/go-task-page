@@ -31,15 +31,35 @@ function setNotes(notes) {
   notesList = document.querySelector(".notes-list");
 
   notes.forEach((note) => {
+
+    let noteFinishAction = document.createElement("a");
+    // noteDeleteAction.href = "#";
+    noteFinishAction.classList.add("btn", "btn-secondary", "me-1", "finish-note");
+    noteFinishAction.innerHTML = "Finish";
+
     let noteDeleteAction = document.createElement("a");
     // noteDeleteAction.href = "#";
-    noteDeleteAction.classList.add("btn", "btn-danger", "delete-note");
+    noteDeleteAction.classList.add("btn", "btn-danger", "me-1", "delete-note");
     noteDeleteAction.innerHTML = "Delete";
 
     let noteEditAction = document.createElement("a");
     // noteEditAction.href = "#";
     noteEditAction.classList.add("btn", "btn-primary", "me-1", "edit-note");
     noteEditAction.innerHTML = "Edit";
+
+    let noteCardStartDate = document.createElement("p");
+    noteCardStartDate.classList.add("card-text", "start-date");
+    let startData = new Date(note.createdAt);
+    noteCardStartDate.innerHTML = "Create: " + startData.getDate() + "/" + (startData.getMonth() + 1) + "/" + startData.getFullYear();
+
+    let noteCardEndDate = document.createElement("p");
+    noteCardEndDate.classList.add("card-text", "end-date");
+    if (note.finishedAt != null) {
+      let endData = new Date(note.finishedAt);
+      noteCardEndDate.innerHTML = "Finish: " + endData.getDate() + "/" + (endData.getMonth() + 1) + "/" + endData.getFullYear();
+    } else {
+      noteCardEndDate.innerHTML = "Not finished yet";
+    }
 
     let noteCardText = document.createElement("p");
     noteCardText.classList.add("card-text");
@@ -48,6 +68,14 @@ function setNotes(notes) {
     let noteCardTitle = document.createElement("h5");
     noteCardTitle.classList.add("card-title");
     noteCardTitle.innerHTML = note.resume;
+
+    let noteCardInfo = document.createElement("div");
+
+    let noteCardContentText = document.createElement("div");
+    noteCardContentText.classList.add("me-2");
+
+    let noteCardContent = document.createElement("div");
+    noteCardContent.classList.add("d-flex", "justify-content-between", "align-items-start");
 
     let noteCardBody = document.createElement("div");
     noteCardBody.classList.add("card-body");
@@ -59,9 +87,18 @@ function setNotes(notes) {
     let separator = document.createElement("hr");
     separator.id = "separator_" + note.id;
 
-    noteCardBody.appendChild(noteCardTitle);
-    noteCardBody.appendChild(noteCardText);
+    noteCardInfo.appendChild(noteCardStartDate);
+    noteCardInfo.appendChild(noteCardEndDate);
+
+    noteCardContentText.appendChild(noteCardTitle);
+    noteCardContentText.appendChild(noteCardText);
+
+    noteCardContent.appendChild(noteCardContentText);
+    noteCardContent.appendChild(noteCardInfo);
+
+    noteCardBody.appendChild(noteCardContent)
     noteCardBody.appendChild(noteEditAction);
+    noteCardBody.appendChild(noteFinishAction);
     noteCardBody.appendChild(noteDeleteAction);
 
     noteCard.appendChild(noteCardBody);
@@ -85,6 +122,8 @@ function editNoteListener() {
 }
 
 function editNote(noteId) {
+  let note;
+
   const card = document.querySelector(`#${noteId}`);
 
   const cardContent = card.querySelector(".card-body");
@@ -97,6 +136,12 @@ function editNote(noteId) {
 
   const cardText = card.querySelector(".card-text");
   let currentDescription = cardText.innerHTML;
+
+  const cardStartDate = card.querySelector(".start-date");
+  let currentStartDate = cardStartDate.innerHTML;
+
+  const cardEndDate = card.querySelector(".end-date");
+  let currentEndDate = cardEndDate.innerHTML;
 
   cardContent.remove();
 
@@ -125,21 +170,37 @@ function editNote(noteId) {
   noteCardContent.appendChild(noteEditCancelAction);
   card.appendChild(noteCardContent);
 
+  note = {
+    id: noteId,
+    resume: currentResume,
+    description: currentDescription,
+    createdAt: currentStartDate,
+    finishedAt: currentEndDate,
+  }
+
   noteEditSaveAction.addEventListener("click", (e) => {
     const resume = e.target.parentElement.querySelector("input").value;
     const description = e.target.parentElement.querySelector("textarea").value;
     updateNoteAPI(noteId, resume, description);
-    editNoteSave(resume, description, e);
+
+    note.currentResume = resume;
+    note.currentDescription = description;
+    editNoteSave(note, e);
   });
 
   noteEditCancelAction.addEventListener("click", (e) => {
-    editNoteCancel(currentResume, currentDescription, e);
+    editNoteCancel(note, e);
   });
 }
 
-function editNoteSave(resume, description, element) {
+function editNoteSave(note, element) {
   const card = element.target.parentElement.parentElement;
   element.target.parentElement.remove();
+
+  let noteFinishAction = document.createElement("a");
+    // noteDeleteAction.href = "#";
+    noteFinishAction.classList.add("btn", "btn-secondary", "me-1", "finish-note");
+    noteFinishAction.innerHTML = "Finish";
 
   let noteDeleteAction = document.createElement("a");
   // noteDeleteAction.href = "#";
@@ -151,13 +212,33 @@ function editNoteSave(resume, description, element) {
   noteEditAction.classList.add("btn", "btn-primary", "me-1", "edit-note");
   noteEditAction.innerHTML = "Edit";
 
+  let noteCardStartDate = document.createElement("p");
+  noteCardStartDate.classList.add("card-text", "start-date");
+  noteCardStartDate.innerHTML = note.createdAt;
+
+  let noteCardEndDate = document.createElement("p");
+  noteCardEndDate.classList.add("card-text", "end-date");
+  if (note.finishedAt != "Not finished yet") {
+    noteCardEndDate.innerHTML = note.finishedAt;
+  } else {
+    noteCardEndDate.innerHTML = "Not finished yet";
+  }
+
   let noteCardText = document.createElement("p");
   noteCardText.classList.add("card-text");
-  noteCardText.innerHTML = description;
+  noteCardText.innerHTML = note.description;
 
   let noteCardTitle = document.createElement("h5");
   noteCardTitle.classList.add("card-title");
-  noteCardTitle.innerHTML = resume;
+  noteCardTitle.innerHTML = note.resume;
+
+  let noteCardInfo = document.createElement("div");
+
+  let noteCardContentText = document.createElement("div");
+  noteCardContentText.classList.add("me-2");
+
+  let noteCardContent = document.createElement("div");
+  noteCardContent.classList.add("d-flex", "justify-content-between", "align-items-start");
 
   let noteCardBody = document.createElement("div");
   noteCardBody.classList.add("card-body");
@@ -168,9 +249,18 @@ function editNoteSave(resume, description, element) {
 
   let separator = document.createElement("hr");
 
-  noteCardBody.appendChild(noteCardTitle);
-  noteCardBody.appendChild(noteCardText);
+  noteCardInfo.appendChild(noteCardStartDate);
+  noteCardInfo.appendChild(noteCardEndDate);
+
+  noteCardContentText.appendChild(noteCardTitle);
+  noteCardContentText.appendChild(noteCardText);
+
+  noteCardContent.appendChild(noteCardContentText);
+  noteCardContent.appendChild(noteCardInfo);
+
+  noteCardBody.appendChild(noteCardContent)
   noteCardBody.appendChild(noteEditAction);
+  noteCardBody.appendChild(noteFinishAction);
   noteCardBody.appendChild(noteDeleteAction);
 
   card.appendChild(noteCardBody);
@@ -181,9 +271,14 @@ function editNoteSave(resume, description, element) {
   //card.appendChild(separator);
 }
 
-function editNoteCancel(resume, description, element) {
+function editNoteCancel(note, element) {
   const card = element.target.parentElement.parentElement;
   element.target.parentElement.remove();
+
+  let noteFinishAction = document.createElement("a");
+  // noteDeleteAction.href = "#";
+  noteFinishAction.classList.add("btn", "btn-secondary", "me-1", "finish-note");
+  noteFinishAction.innerHTML = "Finish";
 
   let noteDeleteAction = document.createElement("a");
   // noteDeleteAction.href = "#";
@@ -195,13 +290,33 @@ function editNoteCancel(resume, description, element) {
   noteEditAction.classList.add("btn", "btn-primary", "me-1", "edit-note");
   noteEditAction.innerHTML = "Edit";
 
+  let noteCardStartDate = document.createElement("p");
+  noteCardStartDate.classList.add("card-text", "start-date");
+  noteCardStartDate.innerHTML = note.createdAt;
+
+  let noteCardEndDate = document.createElement("p");
+  noteCardEndDate.classList.add("card-text", "end-date");
+  if (note.finishedAt != "Not finished yet") {
+    noteCardEndDate.innerHTML = note.finishedAt;
+  } else {
+    noteCardEndDate.innerHTML = "Not finished yet";
+  }
+
   let noteCardText = document.createElement("p");
   noteCardText.classList.add("card-text");
-  noteCardText.innerHTML = description;
+  noteCardText.innerHTML = note.description;
 
   let noteCardTitle = document.createElement("h5");
   noteCardTitle.classList.add("card-title");
-  noteCardTitle.innerHTML = resume;
+  noteCardTitle.innerHTML = note.resume;
+
+  let noteCardInfo = document.createElement("div");
+
+  let noteCardContentText = document.createElement("div");
+  noteCardContentText.classList.add("me-2");
+
+  let noteCardContent = document.createElement("div");
+  noteCardContent.classList.add("d-flex", "justify-content-between", "align-items-start");
 
   let noteCardBody = document.createElement("div");
   noteCardBody.classList.add("card-body");
@@ -210,11 +325,19 @@ function editNoteCancel(resume, description, element) {
   // noteCard.classList.add("card");
   // noteCard.id = "note_" + noteId;
 
-  let separator = document.createElement("hr");
 
-  noteCardBody.appendChild(noteCardTitle);
-  noteCardBody.appendChild(noteCardText);
+  noteCardInfo.appendChild(noteCardStartDate);
+  noteCardInfo.appendChild(noteCardEndDate);
+
+  noteCardContentText.appendChild(noteCardTitle);
+  noteCardContentText.appendChild(noteCardText);
+
+  noteCardContent.appendChild(noteCardContentText);
+  noteCardContent.appendChild(noteCardInfo);
+
+  noteCardBody.appendChild(noteCardContent)
   noteCardBody.appendChild(noteEditAction);
+  noteCardBody.appendChild(noteFinishAction);
   noteCardBody.appendChild(noteDeleteAction);
 
   card.appendChild(noteCardBody);
@@ -226,8 +349,8 @@ function editNoteCancel(resume, description, element) {
 }
 
 function updateNoteAPI(noteId, resume, description) {
-  noteId = noteId.replace("note_", "");
-  console.log(resume, description);
+  noteId = parseInt(noteId.replace("note_", ""));
+  console.log(noteId, resume, description);
 
   options = {
     method: "PATCH",
@@ -242,6 +365,8 @@ function updateNoteAPI(noteId, resume, description) {
       description: description,
     },
   };
+
+  console.log(options);
 
   window.axios
     .request(options)
@@ -300,3 +425,27 @@ function deleteNote(noteId) {
   note.remove();
   separator.remove();
 }
+
+// Finalizar Notas
+
+function finishNoteListener() {
+  const finishButton = document.querySelectorAll(".finish-note");
+
+  finishButton.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const noteId = e.target.parentElement.parentElement.id;
+      finishNote(noteId);
+    });
+  });
+}
+
+function finishNoteAPI(noteId) {
+}
+
+// Outras Lógicas
+
+const createNewButton = document.querySelector("#btnCreateNew");
+
+createNewButton.addEventListener("click", () => {
+  window.location.href = "createNew-blank.html";
+});

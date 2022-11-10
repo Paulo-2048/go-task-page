@@ -55,7 +55,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="/pages/myNotes.html">My Notes</a>
               </li>
-              <li class="nav-item dropdown">
+              <!-- <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   href="#"
@@ -80,7 +80,7 @@
                     >
                   </li>
                 </ul>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a
                   class="nav-link"
@@ -93,16 +93,25 @@
             <!-- <form class="d-flex"> -->
             <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
             <button
+            id="btnLogin"
               class="btn btn-primary me-2"
               onclick="location.href = '/pages/login.html'"
             >
               Login
             </button>
             <button
+            id="btnRegister"
               class="btn btn-outline-primary"
               onclick="location.href = '/pages/register.html'"
             >
               Register
+            </button>
+            <button
+            id="btnLogout"
+              class="btn btn-outline-primary d-none"
+              onclick="location.href = '/pages/login.html'"
+            >
+              Logout
             </button>
             <!-- </form> -->
           </div>
