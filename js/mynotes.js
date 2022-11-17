@@ -16,25 +16,27 @@ options = {
 window.axios
   .request(options)
   .then((response) => {
-    console.log(response.data);
     setNotes(response.data);
     editNoteListener();
+    finishNoteListener();
     deleteNoteListener();
   })
   .catch((error) => {
-    // handle error
     console.error(error);
-    //alert("Ocorreu um erro ao tentar carregar as notas");
   });
 
 function setNotes(notes) {
   notesList = document.querySelector(".notes-list");
 
   notes.forEach((note) => {
-
     let noteFinishAction = document.createElement("a");
     // noteDeleteAction.href = "#";
-    noteFinishAction.classList.add("btn", "btn-secondary", "me-1", "finish-note");
+    noteFinishAction.classList.add(
+      "btn",
+      "btn-secondary",
+      "me-1",
+      "finish-note"
+    );
     noteFinishAction.innerHTML = "Finish";
 
     let noteDeleteAction = document.createElement("a");
@@ -50,13 +52,25 @@ function setNotes(notes) {
     let noteCardStartDate = document.createElement("p");
     noteCardStartDate.classList.add("card-text", "start-date");
     let startData = new Date(note.createdAt);
-    noteCardStartDate.innerHTML = "Create: " + startData.getDate() + "/" + (startData.getMonth() + 1) + "/" + startData.getFullYear();
+    noteCardStartDate.innerHTML =
+      "Create: " +
+      startData.getDate() +
+      "/" +
+      (startData.getMonth() + 1) +
+      "/" +
+      startData.getFullYear();
 
     let noteCardEndDate = document.createElement("p");
     noteCardEndDate.classList.add("card-text", "end-date");
     if (note.finishedAt != null) {
       let endData = new Date(note.finishedAt);
-      noteCardEndDate.innerHTML = "Finish: " + endData.getDate() + "/" + (endData.getMonth() + 1) + "/" + endData.getFullYear();
+      noteCardEndDate.innerHTML =
+        "Finish: " +
+        endData.getDate() +
+        "/" +
+        (endData.getMonth() + 1) +
+        "/" +
+        endData.getFullYear();
     } else {
       noteCardEndDate.innerHTML = "Not finished yet";
     }
@@ -75,7 +89,11 @@ function setNotes(notes) {
     noteCardContentText.classList.add("me-2");
 
     let noteCardContent = document.createElement("div");
-    noteCardContent.classList.add("d-flex", "justify-content-between", "align-items-start");
+    noteCardContent.classList.add(
+      "d-flex",
+      "justify-content-between",
+      "align-items-start"
+    );
 
     let noteCardBody = document.createElement("div");
     noteCardBody.classList.add("card-body");
@@ -96,7 +114,7 @@ function setNotes(notes) {
     noteCardContent.appendChild(noteCardContentText);
     noteCardContent.appendChild(noteCardInfo);
 
-    noteCardBody.appendChild(noteCardContent)
+    noteCardBody.appendChild(noteCardContent);
     noteCardBody.appendChild(noteEditAction);
     noteCardBody.appendChild(noteFinishAction);
     noteCardBody.appendChild(noteDeleteAction);
@@ -176,7 +194,7 @@ function editNote(noteId) {
     description: currentDescription,
     createdAt: currentStartDate,
     finishedAt: currentEndDate,
-  }
+  };
 
   noteEditSaveAction.addEventListener("click", (e) => {
     const resume = e.target.parentElement.querySelector("input").value;
@@ -198,9 +216,9 @@ function editNoteSave(note, element) {
   element.target.parentElement.remove();
 
   let noteFinishAction = document.createElement("a");
-    // noteDeleteAction.href = "#";
-    noteFinishAction.classList.add("btn", "btn-secondary", "me-1", "finish-note");
-    noteFinishAction.innerHTML = "Finish";
+  // noteDeleteAction.href = "#";
+  noteFinishAction.classList.add("btn", "btn-secondary", "me-1", "finish-note");
+  noteFinishAction.innerHTML = "Finish";
 
   let noteDeleteAction = document.createElement("a");
   // noteDeleteAction.href = "#";
@@ -226,11 +244,11 @@ function editNoteSave(note, element) {
 
   let noteCardText = document.createElement("p");
   noteCardText.classList.add("card-text");
-  noteCardText.innerHTML = note.description;
+  noteCardText.innerHTML = note.currentDescription;
 
   let noteCardTitle = document.createElement("h5");
   noteCardTitle.classList.add("card-title");
-  noteCardTitle.innerHTML = note.resume;
+  noteCardTitle.innerHTML = note.currentResume;
 
   let noteCardInfo = document.createElement("div");
 
@@ -238,16 +256,14 @@ function editNoteSave(note, element) {
   noteCardContentText.classList.add("me-2");
 
   let noteCardContent = document.createElement("div");
-  noteCardContent.classList.add("d-flex", "justify-content-between", "align-items-start");
+  noteCardContent.classList.add(
+    "d-flex",
+    "justify-content-between",
+    "align-items-start"
+  );
 
   let noteCardBody = document.createElement("div");
   noteCardBody.classList.add("card-body");
-
-  // let noteCard = document.createElement("div");
-  // noteCard.classList.add("card");
-  // noteCard.id = "note_" + noteId;
-
-  let separator = document.createElement("hr");
 
   noteCardInfo.appendChild(noteCardStartDate);
   noteCardInfo.appendChild(noteCardEndDate);
@@ -258,7 +274,7 @@ function editNoteSave(note, element) {
   noteCardContent.appendChild(noteCardContentText);
   noteCardContent.appendChild(noteCardInfo);
 
-  noteCardBody.appendChild(noteCardContent)
+  noteCardBody.appendChild(noteCardContent);
   noteCardBody.appendChild(noteEditAction);
   noteCardBody.appendChild(noteFinishAction);
   noteCardBody.appendChild(noteDeleteAction);
@@ -266,6 +282,8 @@ function editNoteSave(note, element) {
   card.appendChild(noteCardBody);
 
   editNoteListener();
+  finishNoteListener();
+  deleteNoteListener();
 
   //card.appendChild(noteCard);
   //card.appendChild(separator);
@@ -316,7 +334,11 @@ function editNoteCancel(note, element) {
   noteCardContentText.classList.add("me-2");
 
   let noteCardContent = document.createElement("div");
-  noteCardContent.classList.add("d-flex", "justify-content-between", "align-items-start");
+  noteCardContent.classList.add(
+    "d-flex",
+    "justify-content-between",
+    "align-items-start"
+  );
 
   let noteCardBody = document.createElement("div");
   noteCardBody.classList.add("card-body");
@@ -324,7 +346,6 @@ function editNoteCancel(note, element) {
   // let noteCard = document.createElement("div");
   // noteCard.classList.add("card");
   // noteCard.id = "note_" + noteId;
-
 
   noteCardInfo.appendChild(noteCardStartDate);
   noteCardInfo.appendChild(noteCardEndDate);
@@ -335,7 +356,7 @@ function editNoteCancel(note, element) {
   noteCardContent.appendChild(noteCardContentText);
   noteCardContent.appendChild(noteCardInfo);
 
-  noteCardBody.appendChild(noteCardContent)
+  noteCardBody.appendChild(noteCardContent);
   noteCardBody.appendChild(noteEditAction);
   noteCardBody.appendChild(noteFinishAction);
   noteCardBody.appendChild(noteDeleteAction);
@@ -343,6 +364,8 @@ function editNoteCancel(note, element) {
   card.appendChild(noteCardBody);
 
   editNoteListener();
+  finishNoteListener();
+  deleteNoteListener();
 
   //card.appendChild(noteCard);
   //card.appendChild(separator);
@@ -350,7 +373,6 @@ function editNoteCancel(note, element) {
 
 function updateNoteAPI(noteId, resume, description) {
   noteId = parseInt(noteId.replace("note_", ""));
-  console.log(noteId, resume, description);
 
   options = {
     method: "PATCH",
@@ -366,17 +388,11 @@ function updateNoteAPI(noteId, resume, description) {
     },
   };
 
-  console.log(options);
-
   window.axios
     .request(options)
-    .then((response) => {
-      console.log(response.data);
-    })
+    .then((response) => {})
     .catch((error) => {
-      // handle error
       console.error(error);
-      //alert("Ocorreu um erro ao tentar carregar as notas");
     });
 }
 
@@ -395,8 +411,6 @@ function deleteNoteListener() {
 function deleteNoteAPI(noteId) {
   noteId = noteId.replace("note_", "");
 
-  console.log(noteId);
-
   options = {
     method: "DELETE",
     url: "https://gototask-api.herokuapp.com/todo/" + noteId,
@@ -409,13 +423,10 @@ function deleteNoteAPI(noteId) {
   window.axios
     .request(options)
     .then((response) => {
-      console.log(response.data);
       deleteNote(noteId);
     })
     .catch((error) => {
-      // handle error
       console.error(error);
-      // alert("Ocorreu um erro ao tentar deletar a notas");
     });
 }
 
@@ -434,12 +445,39 @@ function finishNoteListener() {
   finishButton.forEach((button) => {
     button.addEventListener("click", (e) => {
       const noteId = e.target.parentElement.parentElement.id;
-      finishNote(noteId);
+      console.log(noteId);
+      finishNoteAPI(noteId);
+      finishNote(noteId, e);
     });
   });
 }
 
+function finishNote(noteId, element) {
+  const today = new Date();
+
+  const card = element.target.parentElement.parentElement;
+  card.querySelector(".end-date").innerHTML =
+    "Finish: " + today.toLocaleDateString("pt-BR");
+}
+
 function finishNoteAPI(noteId) {
+  noteId = noteId.replace("note_", "");
+
+  options = {
+    method: "PATCH",
+    url: "https://gototask-api.herokuapp.com/todo/finish/" + noteId,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+
+  window.axios
+    .request(options)
+    .then((response) => {})
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 // Outras Lógicas
