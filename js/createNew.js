@@ -8,13 +8,15 @@ submit.addEventListener("click", (e) => {
   let resume = form.resume.value;
   let description = form.description.value;
 
-  sendNote(resume, description);
+  if (verifyFields(resume, description)) {
+    sendNote(resume, description);
+  }
 });
 
 function sendNote(resume, description) {
   const options = {
     method: "POST",
-    url: "https://gototask-api.herokuapp.com/todo/create",
+    url: "https://gototask.herokuapp.com/todo/create",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
@@ -84,5 +86,15 @@ function clearStatusDiv() {
   const statusDiv = document.querySelector(".status");
   if (statusDiv) {
     statusDiv.remove();
+  }
+}
+
+function verifyFields(resume, description) {
+  if (resume == "" || description == "") {
+    
+    alert("Please fill all fields");
+    return false;
+  } else {
+    return true;
   }
 }

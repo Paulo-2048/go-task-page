@@ -6,7 +6,7 @@ let options;
 // Carregar notas
 options = {
   method: "GET",
-  url: "https://gototask-api.herokuapp.com/todo",
+  url: "https://gototask.herokuapp.com/todo",
   headers: {
     "Content-Type": "application/json",
     Authorization: "Bearer " + token,
@@ -16,6 +16,7 @@ options = {
 window.axios
   .request(options)
   .then((response) => {
+    console.log(response.data);
     setNotes(response.data);
     editNoteListener();
     finishNoteListener();
@@ -115,8 +116,10 @@ function setNotes(notes) {
     noteCardContent.appendChild(noteCardInfo);
 
     noteCardBody.appendChild(noteCardContent);
-    noteCardBody.appendChild(noteEditAction);
-    noteCardBody.appendChild(noteFinishAction);
+    if (note.finishedAt == null) {
+      noteCardBody.appendChild(noteEditAction);
+      noteCardBody.appendChild(noteFinishAction);
+    }
     noteCardBody.appendChild(noteDeleteAction);
 
     noteCard.appendChild(noteCardBody);
@@ -168,10 +171,12 @@ function editNote(noteId) {
 
   let noteEditResume = document.createElement("input");
   noteEditResume.classList.add("form-control", "mb-2");
+  noteEditResume.id = "resume";
   noteEditResume.value = currentResume;
 
   let noteEditText = document.createElement("textarea");
   noteEditText.classList.add("form-control", "mb-2");
+  noteEditText.id = "description";
   noteEditText.innerText = currentDescription;
 
   let noteEditSaveAction = document.createElement("a");
@@ -199,11 +204,12 @@ function editNote(noteId) {
   noteEditSaveAction.addEventListener("click", (e) => {
     const resume = e.target.parentElement.querySelector("input").value;
     const description = e.target.parentElement.querySelector("textarea").value;
-    updateNoteAPI(noteId, resume, description);
-
-    note.currentResume = resume;
-    note.currentDescription = description;
-    editNoteSave(note, e);
+    if (verifyFields(e)) {
+      updateNoteAPI(noteId, resume, description);
+      note.currentResume = resume;
+      note.currentDescription = description;
+      editNoteSave(note, e);
+    }
   });
 
   noteEditCancelAction.addEventListener("click", (e) => {
@@ -374,9 +380,13 @@ function editNoteCancel(note, element) {
 function updateNoteAPI(noteId, resume, description) {
   noteId = parseInt(noteId.replace("note_", ""));
 
+  console.log(noteId);
+  console.log(resume);
+  console.log(description);
+
   options = {
     method: "PATCH",
-    url: "https://gototask-api.herokuapp.com/todo/edit",
+    url: "https://gototask.herokuapp.com/todo/edit",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
@@ -413,7 +423,7 @@ function deleteNoteAPI(noteId) {
 
   options = {
     method: "DELETE",
-    url: "https://gototask-api.herokuapp.com/todo/" + noteId,
+    url: "https://gototask.herokuapp.com/todo/" + noteId,
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
@@ -458,6 +468,9 @@ function finishNote(noteId, element) {
   const card = element.target.parentElement.parentElement;
   card.querySelector(".end-date").innerHTML =
     "Finish: " + today.toLocaleDateString("pt-BR");
+
+  card.querySelector(".edit-note").remove();
+  card.querySelector(".finish-note").remove();
 }
 
 function finishNoteAPI(noteId) {
@@ -465,7 +478,7 @@ function finishNoteAPI(noteId) {
 
   options = {
     method: "PATCH",
-    url: "https://gototask-api.herokuapp.com/todo/finish/" + noteId,
+    url: "https://gototask.herokuapp.com/todo/finish/" + noteId,
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
@@ -487,3 +500,16 @@ const createNewButton = document.querySelector("#btnCreateNew");
 createNewButton.addEventListener("click", () => {
   window.location.href = "createNew-blank.html";
 });
+
+function verifyFields(e) {
+  const resume = e.target.parentElement.querySelector("input").value;
+  const description = e.target.parentElement.querySelector("textarea").value;
+
+  if (resume == "" || description == "") {
+    e.preventDefault();
+    alert("Please fill all fields");
+    return false;
+  } else {
+    return true;
+  }
+}

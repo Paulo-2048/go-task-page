@@ -20,7 +20,7 @@ login.addEventListener("click", (e) => {
 
   const options = {
     method: "POST",
-    url: "https://gototask-api.herokuapp.com/jwt/login",
+    url: "https://gototask.herokuapp.com/jwt/login",
     headers: { "Content-Type": "application/json" },
     data: {
       username: email,
